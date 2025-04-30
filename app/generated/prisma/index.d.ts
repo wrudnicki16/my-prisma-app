@@ -23,6 +23,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type Post = $Result.DefaultSelection<Prisma.$PostPayload>
+/**
+ * Model TrackingEvent
+ * 
+ */
+export type TrackingEvent = $Result.DefaultSelection<Prisma.$TrackingEventPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -126,6 +131,16 @@ export class PrismaClient<
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
+  /**
+   * Executes a typed SQL query and returns a typed result
+   * @example
+   * ```
+   * import { myQuery } from '@prisma/client/sql'
+   * 
+   * const result = await prisma.$queryRawTyped(myQuery())
+   * ```
+   */
+  $queryRawTyped<T>(typedSql: runtime.TypedSql<unknown[], T>): Prisma.PrismaPromise<T[]>
 
   /**
    * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
@@ -168,6 +183,16 @@ export class PrismaClient<
     * ```
     */
   get post(): Prisma.PostDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trackingEvent`: Exposes CRUD operations for the **TrackingEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrackingEvents
+    * const trackingEvents = await prisma.trackingEvent.findMany()
+    * ```
+    */
+  get trackingEvent(): Prisma.TrackingEventDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -609,7 +634,8 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
-    Post: 'Post'
+    Post: 'Post',
+    TrackingEvent: 'TrackingEvent'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -628,7 +654,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "post"
+      modelProps: "user" | "post" | "trackingEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -780,6 +806,80 @@ export namespace Prisma {
           }
         }
       }
+      TrackingEvent: {
+        payload: Prisma.$TrackingEventPayload<ExtArgs>
+        fields: Prisma.TrackingEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrackingEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrackingEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>
+          }
+          findFirst: {
+            args: Prisma.TrackingEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrackingEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>
+          }
+          findMany: {
+            args: Prisma.TrackingEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>[]
+          }
+          create: {
+            args: Prisma.TrackingEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>
+          }
+          createMany: {
+            args: Prisma.TrackingEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrackingEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>[]
+          }
+          delete: {
+            args: Prisma.TrackingEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>
+          }
+          update: {
+            args: Prisma.TrackingEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.TrackingEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrackingEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrackingEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.TrackingEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrackingEventPayload>
+          }
+          aggregate: {
+            args: Prisma.TrackingEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrackingEvent>
+          }
+          groupBy: {
+            args: Prisma.TrackingEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrackingEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrackingEventCountArgs<ExtArgs>
+            result: $Utils.Optional<TrackingEventCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -800,6 +900,10 @@ export namespace Prisma {
         $queryRawUnsafe: {
           args: [query: string, ...values: any[]],
           result: any
+        }
+        $queryRawTyped: {
+          args: runtime.UnknownTypedSql,
+          result: Prisma.JsonObject
         }
       }
     }
@@ -866,6 +970,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     post?: PostOmit
+    trackingEvent?: TrackingEventOmit
   }
 
   /* Types for Logging */
@@ -961,10 +1066,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     posts: number
+    trackingEvents: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | UserCountOutputTypeCountPostsArgs
+    trackingEvents?: boolean | UserCountOutputTypeCountTrackingEventsArgs
   }
 
   // Custom InputTypes
@@ -983,6 +1090,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTrackingEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrackingEventWhereInput
   }
 
 
@@ -1173,6 +1287,7 @@ export namespace Prisma {
     email?: boolean
     name?: boolean
     posts?: boolean | User$postsArgs<ExtArgs>
+    trackingEvents?: boolean | User$trackingEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1197,6 +1312,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | User$postsArgs<ExtArgs>
+    trackingEvents?: boolean | User$trackingEventsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1206,6 +1322,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       posts: Prisma.$PostPayload<ExtArgs>[]
+      trackingEvents: Prisma.$TrackingEventPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -1606,6 +1723,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trackingEvents<T extends User$trackingEventsArgs<ExtArgs> = {}>(args?: Subset<T, User$trackingEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2047,6 +2165,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * User.trackingEvents
+   */
+  export type User$trackingEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    where?: TrackingEventWhereInput
+    orderBy?: TrackingEventOrderByWithRelationInput | TrackingEventOrderByWithRelationInput[]
+    cursor?: TrackingEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TrackingEventScalarFieldEnum | TrackingEventScalarFieldEnum[]
   }
 
   /**
@@ -3165,6 +3307,1119 @@ export namespace Prisma {
 
 
   /**
+   * Model TrackingEvent
+   */
+
+  export type AggregateTrackingEvent = {
+    _count: TrackingEventCountAggregateOutputType | null
+    _avg: TrackingEventAvgAggregateOutputType | null
+    _sum: TrackingEventSumAggregateOutputType | null
+    _min: TrackingEventMinAggregateOutputType | null
+    _max: TrackingEventMaxAggregateOutputType | null
+  }
+
+  export type TrackingEventAvgAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    version: number | null
+  }
+
+  export type TrackingEventSumAggregateOutputType = {
+    id: number | null
+    userId: number | null
+    version: number | null
+  }
+
+  export type TrackingEventMinAggregateOutputType = {
+    id: number | null
+    timestamp: Date | null
+    userId: number | null
+    type: string | null
+    variant: string | null
+    version: number | null
+  }
+
+  export type TrackingEventMaxAggregateOutputType = {
+    id: number | null
+    timestamp: Date | null
+    userId: number | null
+    type: string | null
+    variant: string | null
+    version: number | null
+  }
+
+  export type TrackingEventCountAggregateOutputType = {
+    id: number
+    timestamp: number
+    userId: number
+    type: number
+    variant: number
+    version: number
+    _all: number
+  }
+
+
+  export type TrackingEventAvgAggregateInputType = {
+    id?: true
+    userId?: true
+    version?: true
+  }
+
+  export type TrackingEventSumAggregateInputType = {
+    id?: true
+    userId?: true
+    version?: true
+  }
+
+  export type TrackingEventMinAggregateInputType = {
+    id?: true
+    timestamp?: true
+    userId?: true
+    type?: true
+    variant?: true
+    version?: true
+  }
+
+  export type TrackingEventMaxAggregateInputType = {
+    id?: true
+    timestamp?: true
+    userId?: true
+    type?: true
+    variant?: true
+    version?: true
+  }
+
+  export type TrackingEventCountAggregateInputType = {
+    id?: true
+    timestamp?: true
+    userId?: true
+    type?: true
+    variant?: true
+    version?: true
+    _all?: true
+  }
+
+  export type TrackingEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrackingEvent to aggregate.
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackingEvents to fetch.
+     */
+    orderBy?: TrackingEventOrderByWithRelationInput | TrackingEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrackingEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackingEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackingEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrackingEvents
+    **/
+    _count?: true | TrackingEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: TrackingEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: TrackingEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrackingEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrackingEventMaxAggregateInputType
+  }
+
+  export type GetTrackingEventAggregateType<T extends TrackingEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrackingEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrackingEvent[P]>
+      : GetScalarType<T[P], AggregateTrackingEvent[P]>
+  }
+
+
+
+
+  export type TrackingEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrackingEventWhereInput
+    orderBy?: TrackingEventOrderByWithAggregationInput | TrackingEventOrderByWithAggregationInput[]
+    by: TrackingEventScalarFieldEnum[] | TrackingEventScalarFieldEnum
+    having?: TrackingEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrackingEventCountAggregateInputType | true
+    _avg?: TrackingEventAvgAggregateInputType
+    _sum?: TrackingEventSumAggregateInputType
+    _min?: TrackingEventMinAggregateInputType
+    _max?: TrackingEventMaxAggregateInputType
+  }
+
+  export type TrackingEventGroupByOutputType = {
+    id: number
+    timestamp: Date
+    userId: number
+    type: string
+    variant: string
+    version: number
+    _count: TrackingEventCountAggregateOutputType | null
+    _avg: TrackingEventAvgAggregateOutputType | null
+    _sum: TrackingEventSumAggregateOutputType | null
+    _min: TrackingEventMinAggregateOutputType | null
+    _max: TrackingEventMaxAggregateOutputType | null
+  }
+
+  type GetTrackingEventGroupByPayload<T extends TrackingEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrackingEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrackingEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrackingEventGroupByOutputType[P]>
+            : GetScalarType<T[P], TrackingEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrackingEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    userId?: boolean
+    type?: boolean
+    variant?: boolean
+    version?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trackingEvent"]>
+
+  export type TrackingEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    userId?: boolean
+    type?: boolean
+    variant?: boolean
+    version?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trackingEvent"]>
+
+  export type TrackingEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    timestamp?: boolean
+    userId?: boolean
+    type?: boolean
+    variant?: boolean
+    version?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trackingEvent"]>
+
+  export type TrackingEventSelectScalar = {
+    id?: boolean
+    timestamp?: boolean
+    userId?: boolean
+    type?: boolean
+    variant?: boolean
+    version?: boolean
+  }
+
+  export type TrackingEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "timestamp" | "userId" | "type" | "variant" | "version", ExtArgs["result"]["trackingEvent"]>
+  export type TrackingEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TrackingEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TrackingEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TrackingEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrackingEvent"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      timestamp: Date
+      userId: number
+      type: string
+      variant: string
+      version: number
+    }, ExtArgs["result"]["trackingEvent"]>
+    composites: {}
+  }
+
+  type TrackingEventGetPayload<S extends boolean | null | undefined | TrackingEventDefaultArgs> = $Result.GetResult<Prisma.$TrackingEventPayload, S>
+
+  type TrackingEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrackingEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrackingEventCountAggregateInputType | true
+    }
+
+  export interface TrackingEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrackingEvent'], meta: { name: 'TrackingEvent' } }
+    /**
+     * Find zero or one TrackingEvent that matches the filter.
+     * @param {TrackingEventFindUniqueArgs} args - Arguments to find a TrackingEvent
+     * @example
+     * // Get one TrackingEvent
+     * const trackingEvent = await prisma.trackingEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrackingEventFindUniqueArgs>(args: SelectSubset<T, TrackingEventFindUniqueArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrackingEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrackingEventFindUniqueOrThrowArgs} args - Arguments to find a TrackingEvent
+     * @example
+     * // Get one TrackingEvent
+     * const trackingEvent = await prisma.trackingEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrackingEventFindUniqueOrThrowArgs>(args: SelectSubset<T, TrackingEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrackingEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventFindFirstArgs} args - Arguments to find a TrackingEvent
+     * @example
+     * // Get one TrackingEvent
+     * const trackingEvent = await prisma.trackingEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrackingEventFindFirstArgs>(args?: SelectSubset<T, TrackingEventFindFirstArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrackingEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventFindFirstOrThrowArgs} args - Arguments to find a TrackingEvent
+     * @example
+     * // Get one TrackingEvent
+     * const trackingEvent = await prisma.trackingEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrackingEventFindFirstOrThrowArgs>(args?: SelectSubset<T, TrackingEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrackingEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrackingEvents
+     * const trackingEvents = await prisma.trackingEvent.findMany()
+     * 
+     * // Get first 10 TrackingEvents
+     * const trackingEvents = await prisma.trackingEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trackingEventWithIdOnly = await prisma.trackingEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrackingEventFindManyArgs>(args?: SelectSubset<T, TrackingEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrackingEvent.
+     * @param {TrackingEventCreateArgs} args - Arguments to create a TrackingEvent.
+     * @example
+     * // Create one TrackingEvent
+     * const TrackingEvent = await prisma.trackingEvent.create({
+     *   data: {
+     *     // ... data to create a TrackingEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrackingEventCreateArgs>(args: SelectSubset<T, TrackingEventCreateArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrackingEvents.
+     * @param {TrackingEventCreateManyArgs} args - Arguments to create many TrackingEvents.
+     * @example
+     * // Create many TrackingEvents
+     * const trackingEvent = await prisma.trackingEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrackingEventCreateManyArgs>(args?: SelectSubset<T, TrackingEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrackingEvents and returns the data saved in the database.
+     * @param {TrackingEventCreateManyAndReturnArgs} args - Arguments to create many TrackingEvents.
+     * @example
+     * // Create many TrackingEvents
+     * const trackingEvent = await prisma.trackingEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrackingEvents and only return the `id`
+     * const trackingEventWithIdOnly = await prisma.trackingEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrackingEventCreateManyAndReturnArgs>(args?: SelectSubset<T, TrackingEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrackingEvent.
+     * @param {TrackingEventDeleteArgs} args - Arguments to delete one TrackingEvent.
+     * @example
+     * // Delete one TrackingEvent
+     * const TrackingEvent = await prisma.trackingEvent.delete({
+     *   where: {
+     *     // ... filter to delete one TrackingEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrackingEventDeleteArgs>(args: SelectSubset<T, TrackingEventDeleteArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrackingEvent.
+     * @param {TrackingEventUpdateArgs} args - Arguments to update one TrackingEvent.
+     * @example
+     * // Update one TrackingEvent
+     * const trackingEvent = await prisma.trackingEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrackingEventUpdateArgs>(args: SelectSubset<T, TrackingEventUpdateArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrackingEvents.
+     * @param {TrackingEventDeleteManyArgs} args - Arguments to filter TrackingEvents to delete.
+     * @example
+     * // Delete a few TrackingEvents
+     * const { count } = await prisma.trackingEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrackingEventDeleteManyArgs>(args?: SelectSubset<T, TrackingEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrackingEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrackingEvents
+     * const trackingEvent = await prisma.trackingEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrackingEventUpdateManyArgs>(args: SelectSubset<T, TrackingEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrackingEvents and returns the data updated in the database.
+     * @param {TrackingEventUpdateManyAndReturnArgs} args - Arguments to update many TrackingEvents.
+     * @example
+     * // Update many TrackingEvents
+     * const trackingEvent = await prisma.trackingEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrackingEvents and only return the `id`
+     * const trackingEventWithIdOnly = await prisma.trackingEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrackingEventUpdateManyAndReturnArgs>(args: SelectSubset<T, TrackingEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrackingEvent.
+     * @param {TrackingEventUpsertArgs} args - Arguments to update or create a TrackingEvent.
+     * @example
+     * // Update or create a TrackingEvent
+     * const trackingEvent = await prisma.trackingEvent.upsert({
+     *   create: {
+     *     // ... data to create a TrackingEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrackingEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrackingEventUpsertArgs>(args: SelectSubset<T, TrackingEventUpsertArgs<ExtArgs>>): Prisma__TrackingEventClient<$Result.GetResult<Prisma.$TrackingEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrackingEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventCountArgs} args - Arguments to filter TrackingEvents to count.
+     * @example
+     * // Count the number of TrackingEvents
+     * const count = await prisma.trackingEvent.count({
+     *   where: {
+     *     // ... the filter for the TrackingEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrackingEventCountArgs>(
+      args?: Subset<T, TrackingEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrackingEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrackingEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrackingEventAggregateArgs>(args: Subset<T, TrackingEventAggregateArgs>): Prisma.PrismaPromise<GetTrackingEventAggregateType<T>>
+
+    /**
+     * Group by TrackingEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrackingEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrackingEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrackingEventGroupByArgs['orderBy'] }
+        : { orderBy?: TrackingEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrackingEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrackingEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrackingEvent model
+   */
+  readonly fields: TrackingEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrackingEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrackingEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrackingEvent model
+   */
+  interface TrackingEventFieldRefs {
+    readonly id: FieldRef<"TrackingEvent", 'Int'>
+    readonly timestamp: FieldRef<"TrackingEvent", 'DateTime'>
+    readonly userId: FieldRef<"TrackingEvent", 'Int'>
+    readonly type: FieldRef<"TrackingEvent", 'String'>
+    readonly variant: FieldRef<"TrackingEvent", 'String'>
+    readonly version: FieldRef<"TrackingEvent", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrackingEvent findUnique
+   */
+  export type TrackingEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackingEvent to fetch.
+     */
+    where: TrackingEventWhereUniqueInput
+  }
+
+  /**
+   * TrackingEvent findUniqueOrThrow
+   */
+  export type TrackingEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackingEvent to fetch.
+     */
+    where: TrackingEventWhereUniqueInput
+  }
+
+  /**
+   * TrackingEvent findFirst
+   */
+  export type TrackingEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackingEvent to fetch.
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackingEvents to fetch.
+     */
+    orderBy?: TrackingEventOrderByWithRelationInput | TrackingEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrackingEvents.
+     */
+    cursor?: TrackingEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackingEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackingEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrackingEvents.
+     */
+    distinct?: TrackingEventScalarFieldEnum | TrackingEventScalarFieldEnum[]
+  }
+
+  /**
+   * TrackingEvent findFirstOrThrow
+   */
+  export type TrackingEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackingEvent to fetch.
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackingEvents to fetch.
+     */
+    orderBy?: TrackingEventOrderByWithRelationInput | TrackingEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrackingEvents.
+     */
+    cursor?: TrackingEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackingEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackingEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrackingEvents.
+     */
+    distinct?: TrackingEventScalarFieldEnum | TrackingEventScalarFieldEnum[]
+  }
+
+  /**
+   * TrackingEvent findMany
+   */
+  export type TrackingEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * Filter, which TrackingEvents to fetch.
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrackingEvents to fetch.
+     */
+    orderBy?: TrackingEventOrderByWithRelationInput | TrackingEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrackingEvents.
+     */
+    cursor?: TrackingEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrackingEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrackingEvents.
+     */
+    skip?: number
+    distinct?: TrackingEventScalarFieldEnum | TrackingEventScalarFieldEnum[]
+  }
+
+  /**
+   * TrackingEvent create
+   */
+  export type TrackingEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrackingEvent.
+     */
+    data: XOR<TrackingEventCreateInput, TrackingEventUncheckedCreateInput>
+  }
+
+  /**
+   * TrackingEvent createMany
+   */
+  export type TrackingEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrackingEvents.
+     */
+    data: TrackingEventCreateManyInput | TrackingEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrackingEvent createManyAndReturn
+   */
+  export type TrackingEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrackingEvents.
+     */
+    data: TrackingEventCreateManyInput | TrackingEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrackingEvent update
+   */
+  export type TrackingEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrackingEvent.
+     */
+    data: XOR<TrackingEventUpdateInput, TrackingEventUncheckedUpdateInput>
+    /**
+     * Choose, which TrackingEvent to update.
+     */
+    where: TrackingEventWhereUniqueInput
+  }
+
+  /**
+   * TrackingEvent updateMany
+   */
+  export type TrackingEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrackingEvents.
+     */
+    data: XOR<TrackingEventUpdateManyMutationInput, TrackingEventUncheckedUpdateManyInput>
+    /**
+     * Filter which TrackingEvents to update
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * Limit how many TrackingEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrackingEvent updateManyAndReturn
+   */
+  export type TrackingEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * The data used to update TrackingEvents.
+     */
+    data: XOR<TrackingEventUpdateManyMutationInput, TrackingEventUncheckedUpdateManyInput>
+    /**
+     * Filter which TrackingEvents to update
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * Limit how many TrackingEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrackingEvent upsert
+   */
+  export type TrackingEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrackingEvent to update in case it exists.
+     */
+    where: TrackingEventWhereUniqueInput
+    /**
+     * In case the TrackingEvent found by the `where` argument doesn't exist, create a new TrackingEvent with this data.
+     */
+    create: XOR<TrackingEventCreateInput, TrackingEventUncheckedCreateInput>
+    /**
+     * In case the TrackingEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrackingEventUpdateInput, TrackingEventUncheckedUpdateInput>
+  }
+
+  /**
+   * TrackingEvent delete
+   */
+  export type TrackingEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+    /**
+     * Filter which TrackingEvent to delete.
+     */
+    where: TrackingEventWhereUniqueInput
+  }
+
+  /**
+   * TrackingEvent deleteMany
+   */
+  export type TrackingEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrackingEvents to delete
+     */
+    where?: TrackingEventWhereInput
+    /**
+     * Limit how many TrackingEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrackingEvent without action
+   */
+  export type TrackingEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrackingEvent
+     */
+    select?: TrackingEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrackingEvent
+     */
+    omit?: TrackingEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrackingEventInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -3196,6 +4451,18 @@ export namespace Prisma {
   };
 
   export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum]
+
+
+  export const TrackingEventScalarFieldEnum: {
+    id: 'id',
+    timestamp: 'timestamp',
+    userId: 'userId',
+    type: 'type',
+    variant: 'variant',
+    version: 'version'
+  };
+
+  export type TrackingEventScalarFieldEnum = (typeof TrackingEventScalarFieldEnum)[keyof typeof TrackingEventScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3263,6 +4530,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -3287,6 +4568,7 @@ export namespace Prisma {
     email?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
     posts?: PostListRelationFilter
+    trackingEvents?: TrackingEventListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -3294,6 +4576,7 @@ export namespace Prisma {
     email?: SortOrder
     name?: SortOrderInput | SortOrder
     posts?: PostOrderByRelationAggregateInput
+    trackingEvents?: TrackingEventOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -3304,6 +4587,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     posts?: PostListRelationFilter
+    trackingEvents?: TrackingEventListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -3383,10 +4667,73 @@ export namespace Prisma {
     authorId?: IntWithAggregatesFilter<"Post"> | number
   }
 
+  export type TrackingEventWhereInput = {
+    AND?: TrackingEventWhereInput | TrackingEventWhereInput[]
+    OR?: TrackingEventWhereInput[]
+    NOT?: TrackingEventWhereInput | TrackingEventWhereInput[]
+    id?: IntFilter<"TrackingEvent"> | number
+    timestamp?: DateTimeFilter<"TrackingEvent"> | Date | string
+    userId?: IntFilter<"TrackingEvent"> | number
+    type?: StringFilter<"TrackingEvent"> | string
+    variant?: StringFilter<"TrackingEvent"> | string
+    version?: IntFilter<"TrackingEvent"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TrackingEventOrderByWithRelationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    variant?: SortOrder
+    version?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type TrackingEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: TrackingEventWhereInput | TrackingEventWhereInput[]
+    OR?: TrackingEventWhereInput[]
+    NOT?: TrackingEventWhereInput | TrackingEventWhereInput[]
+    timestamp?: DateTimeFilter<"TrackingEvent"> | Date | string
+    userId?: IntFilter<"TrackingEvent"> | number
+    type?: StringFilter<"TrackingEvent"> | string
+    variant?: StringFilter<"TrackingEvent"> | string
+    version?: IntFilter<"TrackingEvent"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type TrackingEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    variant?: SortOrder
+    version?: SortOrder
+    _count?: TrackingEventCountOrderByAggregateInput
+    _avg?: TrackingEventAvgOrderByAggregateInput
+    _max?: TrackingEventMaxOrderByAggregateInput
+    _min?: TrackingEventMinOrderByAggregateInput
+    _sum?: TrackingEventSumOrderByAggregateInput
+  }
+
+  export type TrackingEventScalarWhereWithAggregatesInput = {
+    AND?: TrackingEventScalarWhereWithAggregatesInput | TrackingEventScalarWhereWithAggregatesInput[]
+    OR?: TrackingEventScalarWhereWithAggregatesInput[]
+    NOT?: TrackingEventScalarWhereWithAggregatesInput | TrackingEventScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"TrackingEvent"> | number
+    timestamp?: DateTimeWithAggregatesFilter<"TrackingEvent"> | Date | string
+    userId?: IntWithAggregatesFilter<"TrackingEvent"> | number
+    type?: StringWithAggregatesFilter<"TrackingEvent"> | string
+    variant?: StringWithAggregatesFilter<"TrackingEvent"> | string
+    version?: IntWithAggregatesFilter<"TrackingEvent"> | number
+  }
+
   export type UserCreateInput = {
     email: string
     name?: string | null
     posts?: PostCreateNestedManyWithoutAuthorInput
+    trackingEvents?: TrackingEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -3394,12 +4741,14 @@ export namespace Prisma {
     email: string
     name?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    trackingEvents?: TrackingEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUpdateManyWithoutAuthorNestedInput
+    trackingEvents?: TrackingEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -3407,6 +4756,7 @@ export namespace Prisma {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    trackingEvents?: TrackingEventUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -3478,6 +4828,65 @@ export namespace Prisma {
     authorId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type TrackingEventCreateInput = {
+    timestamp?: Date | string
+    type: string
+    variant: string
+    version: number
+    user: UserCreateNestedOneWithoutTrackingEventsInput
+  }
+
+  export type TrackingEventUncheckedCreateInput = {
+    id?: number
+    timestamp?: Date | string
+    userId: number
+    type: string
+    variant: string
+    version: number
+  }
+
+  export type TrackingEventUpdateInput = {
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutTrackingEventsNestedInput
+  }
+
+  export type TrackingEventUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackingEventCreateManyInput = {
+    id?: number
+    timestamp?: Date | string
+    userId: number
+    type: string
+    variant: string
+    version: number
+  }
+
+  export type TrackingEventUpdateManyMutationInput = {
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackingEventUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -3525,12 +4934,22 @@ export namespace Prisma {
     none?: PostWhereInput
   }
 
+  export type TrackingEventListRelationFilter = {
+    every?: TrackingEventWhereInput
+    some?: TrackingEventWhereInput
+    none?: TrackingEventWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
   export type PostOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TrackingEventOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -3664,6 +5083,70 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type TrackingEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    variant?: SortOrder
+    version?: SortOrder
+  }
+
+  export type TrackingEventAvgOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    version?: SortOrder
+  }
+
+  export type TrackingEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    variant?: SortOrder
+    version?: SortOrder
+  }
+
+  export type TrackingEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    timestamp?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    variant?: SortOrder
+    version?: SortOrder
+  }
+
+  export type TrackingEventSumOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    version?: SortOrder
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type PostCreateNestedManyWithoutAuthorInput = {
     create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
@@ -3671,11 +5154,25 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
+  export type TrackingEventCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrackingEventCreateWithoutUserInput, TrackingEventUncheckedCreateWithoutUserInput> | TrackingEventCreateWithoutUserInput[] | TrackingEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackingEventCreateOrConnectWithoutUserInput | TrackingEventCreateOrConnectWithoutUserInput[]
+    createMany?: TrackingEventCreateManyUserInputEnvelope
+    connect?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+  }
+
   export type PostUncheckedCreateNestedManyWithoutAuthorInput = {
     create?: XOR<PostCreateWithoutAuthorInput, PostUncheckedCreateWithoutAuthorInput> | PostCreateWithoutAuthorInput[] | PostUncheckedCreateWithoutAuthorInput[]
     connectOrCreate?: PostCreateOrConnectWithoutAuthorInput | PostCreateOrConnectWithoutAuthorInput[]
     createMany?: PostCreateManyAuthorInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type TrackingEventUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrackingEventCreateWithoutUserInput, TrackingEventUncheckedCreateWithoutUserInput> | TrackingEventCreateWithoutUserInput[] | TrackingEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackingEventCreateOrConnectWithoutUserInput | TrackingEventCreateOrConnectWithoutUserInput[]
+    createMany?: TrackingEventCreateManyUserInputEnvelope
+    connect?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -3700,6 +5197,20 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type TrackingEventUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrackingEventCreateWithoutUserInput, TrackingEventUncheckedCreateWithoutUserInput> | TrackingEventCreateWithoutUserInput[] | TrackingEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackingEventCreateOrConnectWithoutUserInput | TrackingEventCreateOrConnectWithoutUserInput[]
+    upsert?: TrackingEventUpsertWithWhereUniqueWithoutUserInput | TrackingEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrackingEventCreateManyUserInputEnvelope
+    set?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    disconnect?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    delete?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    connect?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    update?: TrackingEventUpdateWithWhereUniqueWithoutUserInput | TrackingEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrackingEventUpdateManyWithWhereWithoutUserInput | TrackingEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrackingEventScalarWhereInput | TrackingEventScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -3722,6 +5233,20 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type TrackingEventUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrackingEventCreateWithoutUserInput, TrackingEventUncheckedCreateWithoutUserInput> | TrackingEventCreateWithoutUserInput[] | TrackingEventUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrackingEventCreateOrConnectWithoutUserInput | TrackingEventCreateOrConnectWithoutUserInput[]
+    upsert?: TrackingEventUpsertWithWhereUniqueWithoutUserInput | TrackingEventUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrackingEventCreateManyUserInputEnvelope
+    set?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    disconnect?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    delete?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    connect?: TrackingEventWhereUniqueInput | TrackingEventWhereUniqueInput[]
+    update?: TrackingEventUpdateWithWhereUniqueWithoutUserInput | TrackingEventUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrackingEventUpdateManyWithWhereWithoutUserInput | TrackingEventUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrackingEventScalarWhereInput | TrackingEventScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutPostsInput = {
     create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>
     connectOrCreate?: UserCreateOrConnectWithoutPostsInput
@@ -3738,6 +5263,24 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPostsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostsInput, UserUpdateWithoutPostsInput>, UserUncheckedUpdateWithoutPostsInput>
+  }
+
+  export type UserCreateNestedOneWithoutTrackingEventsInput = {
+    create?: XOR<UserCreateWithoutTrackingEventsInput, UserUncheckedCreateWithoutTrackingEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrackingEventsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type UserUpdateOneRequiredWithoutTrackingEventsNestedInput = {
+    create?: XOR<UserCreateWithoutTrackingEventsInput, UserUncheckedCreateWithoutTrackingEventsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrackingEventsInput
+    upsert?: UserUpsertWithoutTrackingEventsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrackingEventsInput, UserUpdateWithoutTrackingEventsInput>, UserUncheckedUpdateWithoutTrackingEventsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -3864,6 +5407,31 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
   export type PostCreateWithoutAuthorInput = {
     title: string
     content?: string | null
@@ -3884,6 +5452,31 @@ export namespace Prisma {
 
   export type PostCreateManyAuthorInputEnvelope = {
     data: PostCreateManyAuthorInput | PostCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrackingEventCreateWithoutUserInput = {
+    timestamp?: Date | string
+    type: string
+    variant: string
+    version: number
+  }
+
+  export type TrackingEventUncheckedCreateWithoutUserInput = {
+    id?: number
+    timestamp?: Date | string
+    type: string
+    variant: string
+    version: number
+  }
+
+  export type TrackingEventCreateOrConnectWithoutUserInput = {
+    where: TrackingEventWhereUniqueInput
+    create: XOR<TrackingEventCreateWithoutUserInput, TrackingEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrackingEventCreateManyUserInputEnvelope = {
+    data: TrackingEventCreateManyUserInput | TrackingEventCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -3914,15 +5507,45 @@ export namespace Prisma {
     authorId?: IntFilter<"Post"> | number
   }
 
+  export type TrackingEventUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrackingEventWhereUniqueInput
+    update: XOR<TrackingEventUpdateWithoutUserInput, TrackingEventUncheckedUpdateWithoutUserInput>
+    create: XOR<TrackingEventCreateWithoutUserInput, TrackingEventUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrackingEventUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrackingEventWhereUniqueInput
+    data: XOR<TrackingEventUpdateWithoutUserInput, TrackingEventUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrackingEventUpdateManyWithWhereWithoutUserInput = {
+    where: TrackingEventScalarWhereInput
+    data: XOR<TrackingEventUpdateManyMutationInput, TrackingEventUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrackingEventScalarWhereInput = {
+    AND?: TrackingEventScalarWhereInput | TrackingEventScalarWhereInput[]
+    OR?: TrackingEventScalarWhereInput[]
+    NOT?: TrackingEventScalarWhereInput | TrackingEventScalarWhereInput[]
+    id?: IntFilter<"TrackingEvent"> | number
+    timestamp?: DateTimeFilter<"TrackingEvent"> | Date | string
+    userId?: IntFilter<"TrackingEvent"> | number
+    type?: StringFilter<"TrackingEvent"> | string
+    variant?: StringFilter<"TrackingEvent"> | string
+    version?: IntFilter<"TrackingEvent"> | number
+  }
+
   export type UserCreateWithoutPostsInput = {
     email: string
     name?: string | null
+    trackingEvents?: TrackingEventCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
     id?: number
     email: string
     name?: string | null
+    trackingEvents?: TrackingEventUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -3944,12 +5567,56 @@ export namespace Prisma {
   export type UserUpdateWithoutPostsInput = {
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingEvents?: TrackingEventUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
     id?: IntFieldUpdateOperationsInput | number
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    trackingEvents?: TrackingEventUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutTrackingEventsInput = {
+    email: string
+    name?: string | null
+    posts?: PostCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutTrackingEventsInput = {
+    id?: number
+    email: string
+    name?: string | null
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutTrackingEventsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrackingEventsInput, UserUncheckedCreateWithoutTrackingEventsInput>
+  }
+
+  export type UserUpsertWithoutTrackingEventsInput = {
+    update: XOR<UserUpdateWithoutTrackingEventsInput, UserUncheckedUpdateWithoutTrackingEventsInput>
+    create: XOR<UserCreateWithoutTrackingEventsInput, UserUncheckedCreateWithoutTrackingEventsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrackingEventsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrackingEventsInput, UserUncheckedUpdateWithoutTrackingEventsInput>
+  }
+
+  export type UserUpdateWithoutTrackingEventsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrackingEventsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type PostCreateManyAuthorInput = {
@@ -3957,6 +5624,14 @@ export namespace Prisma {
     title: string
     content?: string | null
     published?: boolean
+  }
+
+  export type TrackingEventCreateManyUserInput = {
+    id?: number
+    timestamp?: Date | string
+    type: string
+    variant: string
+    version: number
   }
 
   export type PostUpdateWithoutAuthorInput = {
@@ -3977,6 +5652,29 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     content?: NullableStringFieldUpdateOperationsInput | string | null
     published?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TrackingEventUpdateWithoutUserInput = {
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackingEventUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type TrackingEventUncheckedUpdateManyWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    type?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    version?: IntFieldUpdateOperationsInput | number
   }
 
 

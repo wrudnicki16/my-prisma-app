@@ -7,6 +7,7 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../app/generated/prisma"
+  previewFeatures = ["typedSql"]
 }
 
 datasource db {
@@ -15,10 +16,11 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  name           String?
+  posts          Post[]
+  trackingEvents TrackingEvent[]
 }
 
 model Post {
@@ -28,4 +30,14 @@ model Post {
   published Boolean @default(false)
   authorId  Int
   author    User    @relation(fields: [authorId], references: [id])
+}
+
+model TrackingEvent {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+  userId    Int
+  type      String
+  variant   String
+  version   Int
+  user      User     @relation(fields: [userId], references: [id])
 }
