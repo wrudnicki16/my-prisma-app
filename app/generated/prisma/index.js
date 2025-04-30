@@ -81,7 +81,7 @@ Prisma.NullTypes = {
 
 
 
-  const path = require('path')
+const path = require('path')
 
 /**
  * Enums
@@ -178,12 +178,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiYWY1ODJiY2QtY2I3YS00NmRjLWI4MGUtMTAxYzcwNDQ0ZGQ3IiwidGVuYW50X2lkIjoiMTA3NTIyMDQxZjE2N2NmOGY1YWJjNmNhYzBmOWY5ODZhN2VmZDk4YTUwOTlkZTA4NjdhMmFmOTE0NzcyNWRhYSIsImludGVybmFsX3NlY3JldCI6IjU5MDRhNzQ3LWU2MGYtNDQ2Ny1iNGJjLTJjY2VhY2Q1MjlhNSJ9.pcVOceMmLFeWaKQ9M9AdlWO_a26ZdFDf6vw6yUdXrqE"
+        "value": null
       }
     }
   },
@@ -200,7 +200,7 @@ if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
     "app/generated/prisma",
     "generated/prisma",
   ]
-  
+
   const alternativePath = alternativePaths.find((altPath) => {
     return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'))
   }) ?? alternativePaths[0]
@@ -218,8 +218,8 @@ config.compilerWasm = undefined
 const { warnEnvConflicts } = require('./runtime/library.js')
 
 warnEnvConflicts({
-    rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
-    schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
+  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
 })
 
 const PrismaClient = getPrismaClient(config)
