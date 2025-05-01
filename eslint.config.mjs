@@ -13,7 +13,7 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     // Note: there should be no other properties in this object
-    ignores: ["app/generated/prisma/**"],
+    ignores: ["app/generated/prisma/**", "src/app/generated/prisma/**"],
   }
 ];
 
