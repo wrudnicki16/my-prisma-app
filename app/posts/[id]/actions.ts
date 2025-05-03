@@ -31,4 +31,35 @@ export async function createComment(formData: FormData) {
     console.error('Error creating comment:', error)
     throw new Error('Failed to create comment')
   }
+}
+
+export async function deleteComment(commentId: number, postId: number) {
+  // TODO: Get the actual user ID from the session and verify ownership
+  const userId = 1 // Replace this with actual authenticated user ID
+
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: { id: commentId },
+      select: { authorId: true }
+    })
+
+    if (!comment) {
+      throw new Error('Comment not found')
+    }
+
+    // Verify the user owns the comment
+    if (comment.authorId !== userId) {
+      throw new Error('Unauthorized')
+    }
+
+    await prisma.comment.delete({
+      where: { id: commentId }
+    })
+
+    // Revalidate the post page to show the updated comments
+    revalidatePath(`/posts/${postId}`)
+  } catch (error) {
+    console.error('Error deleting comment:', error)
+    throw new Error('Failed to delete comment')
+  }
 } 
