@@ -143,6 +143,15 @@ exports.Prisma.TrackingEventScalarFieldEnum = {
   version: 'version'
 };
 
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  authorId: 'authorId',
+  postId: 'postId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -162,7 +171,8 @@ exports.Prisma.NullsOrder = {
 exports.Prisma.ModelName = {
   User: 'User',
   Post: 'Post',
-  TrackingEvent: 'TrackingEvent'
+  TrackingEvent: 'TrackingEvent',
+  Comment: 'Comment'
 };
 
 /**
