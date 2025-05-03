@@ -8,7 +8,6 @@ generator client {
   provider        = "prisma-client-js"
   output          = "../app/generated/prisma"
   previewFeatures = ["typedSql"]
-  engineType      = "library"
 }
 
 datasource db {

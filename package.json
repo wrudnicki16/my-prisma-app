@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "postinstall": "prisma generate",
+    "postinstall": "dotenv -e .env.sample --prisma generate",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:postgres": "dotenv -e .env.sample -- npx prisma migrate deploy",
+    "test": "dotenv -e .env.sample -- jest -i"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -24,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "prisma": "^6.7.0",
