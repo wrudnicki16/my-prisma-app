@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "postinstall": "dotenv -e .env.sample --prisma generate",
+    "postinstall": "npx dotenv -e .env.sample -- prisma generate",
     "start": "next start",
     "lint": "next lint",
-    "migrate:postgres": "dotenv -e .env.sample -- npx prisma migrate deploy",
-    "test": "dotenv -e .env.sample -- jest -i"
+    "migrate:postgres": "npx dotenv -e .env.sample -- npx prisma migrate deploy",
+    "test": "npx dotenv -e .env.sample -- jest -i"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
